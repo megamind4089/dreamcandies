@@ -8,9 +8,11 @@
 
 #include <stdio.h>
 
+char    shortlisted[100][1000];
+
 int main()
 {
-    printf("Hello world\n");
+    printf("Hello world!\n");
 
     return 0;
 }
