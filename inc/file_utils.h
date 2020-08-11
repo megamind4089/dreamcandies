@@ -11,6 +11,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include "main.h"
+#include "buffer.h"
 
 #define FILE_BUFFER_SIZE    (1*1024*1024)
 
@@ -31,7 +33,7 @@ typedef struct _file_t {
 
 bool file_open(const char *filename, filetype_t type, file_t *file);
 
-bool file_read(file_t *file, char *buf, size_t buf_size);
+bool file_read(file_t *file, buffer_t *buf, size_t size);
 
 bool file_close(const file_t *file);
 

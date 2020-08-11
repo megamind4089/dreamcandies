@@ -8,40 +8,30 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include "file_utils.h"
+#include "buffer.h"
 
 int main()
 {
     file_t file;
+    buffer_t    buf;
 
-    if (!file_open("./test/customer.csv", FILE_READ, &file)) {
-        fprintf(stderr, "\nFile open failed\n");
-        return -1;
-    }
+    assert(buffer_init(&buf, 1024));
+    assert(file_open("./test/customer.csv", FILE_READ, &file));
 
-    char buf[50] = {0};
-    if (!file_read(&file, buf, sizeof(buf))) {
-        fprintf(stderr, "\nFile open failed\n");
-        return -1;
-    }
-    for (int i=0; i<50; i++) printf("%c", buf[i]);
-    printf("\n\n");
+    assert(file_read(&file, &buf, 50));
+    for (int i=0; i<50; i++) printf("%c", buf.current[i]);
 
-    memset(buf, 0, sizeof buf);
-    if (!file_read(&file, buf, sizeof(buf))) {
-        fprintf(stderr, "\nFile open failed\n");
-        return -1;
-    }
-    for (int i=0; i<50; i++) printf("%c", buf[i]);
-    printf("\n\n");
+    assert(buffer_move(&buf, 50));
+    assert(file_read(&file, &buf, 50));
+    for (int i=0; i<50; i++) printf("%c", buf.current[i]);
 
-    memset(buf, 0, sizeof buf);
-    if (!file_read(&file, buf, sizeof(buf))) {
-        fprintf(stderr, "\nFile open failed\n");
-        return -1;
-    }
-    for (int i=0; i<50; i++) printf("%c", buf[i]);
-    printf("\n\n");
+    assert(buffer_move(&buf, 50));
+    assert(file_read(&file, &buf, 50));
+    for (int i=0; i<50; i++) printf("%c", buf.current[i]);
+
+    assert(buffer_free(&buf));
 
     file_close(&file);
     return 0;

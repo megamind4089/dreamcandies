@@ -9,10 +9,12 @@
 #ifndef _CUSTOMER_H_
 #define _CUSTOMER_H_
 
+#include "main.h"
+
 typedef struct _customer_t {
-    char        customer_code[30];
-    char        first_name[100];
-    char        last_name[100];
+    char        customer_code[CODE_SIZE];
+    char        first_name[NAME_SIZE];
+    char        last_name[NAME_SIZE];
 } customer_t;
 
 #endif // _CUSTOMER_H_
