@@ -44,6 +44,44 @@ bool str_extract_line_fields(buffer_t *buf, char *fields[])
     return false;
 }
 
+bool str_extract_line_field(buffer_t *buf, uint8_t field_idx, char **line, char **field)
+{
+    char *fields[STR_MAX_FIELDS] = {0};
+    int field_index = 0;
+
+    if (!buf || !buf->len)
+        return false;
+
+    fields[field_index++] = buf->current;
+
+    for (int i = 0; i < buf->len; i++) {
+        char ch = buf->current[i];
+
+        switch(ch)  {
+            case ',':
+                fields[field_index++] = &buf->current[i + 1];
+                break;
+            case '\n':
+            case '\0':
+                *line = buf->current;
+                buf->current[i] = '\0';
+                fields[field_index++] = &buf->current[i + 1];
+                assert(field_idx <= field_index);
+
+                *field = strndup(fields[field_idx-1], fields[field_idx]-fields[field_idx-1] - 1);
+                buffer_move(buf, i+1);
+
+                return true;
+            default:
+                break;
+        }
+    }
+
+    *line = buf->current;
+    *field = NULL;
+    return false;
+}
+
 bool str_extract_field(char *dest, const char *src)
 {
     if (!src || !dest) return false;
@@ -53,4 +91,5 @@ bool str_extract_field(char *dest, const char *src)
     while('"' != *src && '“' != *src) {
         *dest++ = *src++;
     }
+    *dest = '\0';
 }

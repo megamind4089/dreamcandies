@@ -32,8 +32,10 @@ int main()
     for (int i=0; i<50; i++) printf("%c", buf.current[i]);
 
     assert(buffer_free(&buf));
+    assert(file_close(&file));
 
-    file_close(&file);
+    printf("File utils: PASSED\n");
+
     return 0;
 }
 

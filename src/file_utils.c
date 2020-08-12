@@ -20,7 +20,7 @@ bool file_open(const char *filename,
                filetype_t type, file_t *file)
 {
     int fd;
-    int flags = O_CLOEXEC | O_NONBLOCK;
+    int flags = O_CLOEXEC;
 
     if (!file || !filename) {
         return false;
@@ -78,4 +78,25 @@ bool file_read(file_t *file, buffer_t *buf, size_t size)
     return true;
 }
 
+bool file_write(file_t *file, buffer_t *buf)
+{
+    int bytes_write = 0;
+    if (file->type == FILE_READ)
+        return false;
+
+    if (!buf->len)
+        return true;
+
+    bytes_write = write(file->fd, buf->current, buf->len);
+    if (-1 == bytes_write) {
+        fprintf(stderr, "File read error\n");
+        return false;
+    }
+    if (0 == bytes_write) {
+        return false;
+    }
+    buf->remaining -= bytes_write;
+    buf->len += bytes_write;
+    return true;
+}
 
