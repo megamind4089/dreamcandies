@@ -3,15 +3,15 @@
 CFLAGS += -Wno-multichar
 CFLAGS += -g -Og	# GDB symbols
 
-all: run
+all: compile
 
 run: compile
 	@rm -rf output
 	@mkdir -p output
-	@./extract_tool
+	@./extract_sample
 
 compile: src/*.c
-	@gcc src/*.c -Iinc $(CFLAGS) -o extract_tool
+	@gcc src/*.c -Iinc $(CFLAGS) -o extract_sample
 
 test: unittest/*.c
 	@mkdir -p build
@@ -21,6 +21,6 @@ test: unittest/*.c
 	@./build/str_utils_test
 
 clean:
-	@rm -rf extract_tool
+	@rm -rf extract_sample
 	@rm -rf build
 	@rm -rf output/*

@@ -15,7 +15,8 @@
 static const char customer_file[] = "./testdata/customer.csv";
 static const char invoice_file[] = "./testdata/invoice.csv";
 static const char invoice_item_file[] = "./testdata/invoice_item.csv";
-static const char sample_file[] = "testdata/sample.csv";
+static char _sample_file[] = "testdata/sample.csv";
+static char *sample_file = _sample_file;
 
 static const char o_customer_file[] = "./output/customer.csv";
 static const char o_invoice_file[] = "./output/invoice.csv";
@@ -351,8 +352,19 @@ bool extract_invoice_items()
     return true;
 }
 
-int main()
+int main(int argc,char* argv[])
 {
+    if (argc >= 2)
+    {
+        if (!strcmp(argv[1], "-h")) {
+            printf("Usage: %s <sample_file> \n\n", argv[0]);
+            printf("If the sample file is not provided, will load default sample file: ");
+            printf("\"./testdata/sample.csv\"\n");
+            return 0;
+        }
+        sample_file = argv[1];
+    }
+
     if (!buffer_init(&buffer, BUFFER_SIZE)) {
         fprintf(stderr, "Buffer init failed\n");
         return -1;
