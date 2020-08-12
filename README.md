@@ -27,6 +27,12 @@ Since the strutils extracts all the fields from the row, this can be extended to
 based on the future requirements.
 
 
+TestData:
+Test data can be generated using the scripts inside the directory 'testdata'.
+The generated test data should be inside this 'testdata' directory.
+
+The sample file path can be given as either the command line argument or it will use the default file
+
 Improvements:
 Can add test cases for boundary condition checks.
 
