@@ -21,7 +21,7 @@ static const char o_customer_file[] = "./output/customer.csv";
 static const char o_invoice_file[] = "./output/invoice.csv";
 static const char o_invoice_item_file[] = "./output/invoice_item.csv";
 
-#define BUFFER_SIZE     (1*1024*1024)
+#define BUFFER_SIZE     (10*1024*1024)
 
 static const char NEWLINE[] = "\n";
 static char sample_customers[NUM_SHORTLISTED][CODE_SIZE] = {0};
@@ -402,25 +402,30 @@ int main()
         fprintf(stderr, "Generating sample customers failed\n");
         return -1;
     }
+    printf("Loaded sample customers in memory\n");
 
     if (!extract_customer()) {
         fprintf(stderr, "Generating shortlist customers failed\n");
         return -1;
     }
+    printf("Extracted sample customers\n");
 
     if (!extract_invoice()) {
         fprintf(stderr, "Generating shortlist customers failed\n");
         return -1;
     }
-    dump_invoice_list();
+    printf("Extracted invoice of sample customers\n");
+    // dump_invoice_list();
 
     if (!extract_invoice_items()) {
         fprintf(stderr, "Generating shortlist customers failed\n");
         return -1;
     }
-    free_invoice_list();
+    printf("Extracted invoice items of sample customers\n");
 
+    free_invoice_list();
     buffer_free(&buffer);
     buffer_free(&out_buffer);
+
     return 0;
 }

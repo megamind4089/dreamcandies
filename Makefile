@@ -23,3 +23,4 @@ test: unittest/*.c
 clean:
 	@rm -rf extract_tool
 	@rm -rf build
+	@rm -rf output/*
