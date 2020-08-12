@@ -14,7 +14,7 @@
 #define NAME_SIZE   (100)
 #define DATE_SIZE   (12)
 
-#define NUM_SHORTLISTED (1000)
+#define NUM_SHORTLISTED (1024)
 
 
 #endif // _MAIN_H_

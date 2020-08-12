@@ -80,23 +80,26 @@ bool file_read(file_t *file, buffer_t *buf, size_t size)
 
 bool file_write(file_t *file, buffer_t *buf)
 {
-    int bytes_write = 0;
+    int ret;
+    size_t bytes_write = 0;
     if (file->type == FILE_READ)
         return false;
 
     if (!buf->len)
         return true;
 
-    bytes_write = write(file->fd, buf->current, buf->len);
-    if (-1 == bytes_write) {
-        fprintf(stderr, "File read error\n");
-        return false;
+    while (bytes_write < buf->len) {
+        ret += write(file->fd, buf->current + bytes_write, buf->len - bytes_write);
+        if (-1 == ret) {
+            fprintf(stderr, "File read error\n");
+            return false;
+        }
+        if (0 == ret) {
+            return false;
+        }
+        bytes_write += ret;
     }
-    if (0 == bytes_write) {
-        return false;
-    }
-    buf->remaining -= bytes_write;
-    buf->len += bytes_write;
+    buffer_clear(buf);
     return true;
 }
 

@@ -6,10 +6,10 @@ CFLAGS += -g -Og	# GDB symbols
 all: run
 
 run: compile
-	./extract_tool
+	@./extract_tool
 
 compile: src/*.c
-	gcc src/*.c -Iinc $(CFLAGS) -o extract_tool
+	@gcc src/*.c -Iinc $(CFLAGS) -o extract_tool
 
 test: unittest/*.c
 	mkdir -p build

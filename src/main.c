@@ -11,12 +11,16 @@
 #include "str_utils.h"
 #include "buffer.h"
 
-static const char customer_file[] = "./test/customer.csv";
-static const char invoice_file[] = "./test/invoice.csv";
-static const char invoice_item_file[] = "./test/invoice_item.csv";
-static const char sample_file[] = "./test/sample.csv";
+static const char customer_file[] = "./testdata/customer.csv";
+static const char invoice_file[] = "./testdata/invoice.csv";
+static const char invoice_item_file[] = "./testdata/invoice_item.csv";
+static const char sample_file[] = "./testdata/sample.csv";
 
-#define BUFFER_SIZE     (1024*1024)
+static const char o_customer_file[] = "./output/customer.csv";
+static const char o_invoice_file[] = "./output/invoice.csv";
+static const char o_invoice_item_file[] = "./output/invoice_item.csv";
+
+#define BUFFER_SIZE     (1*1024*1024)
 
 char    shortlisted[NUM_SHORTLISTED][CODE_SIZE] = {0};
 buffer_t    buffer, out_buffer;
@@ -61,22 +65,29 @@ bool generate_shortlisted_customers()
 
     }
 
-    for (int i = 0; i < NUM_SHORTLISTED; i++) {
-        if (shortlisted[i][0] == '\0') break;
-        printf("%s\n", shortlisted[i]);
-    }
+    // for (int i = 0; i < NUM_SHORTLISTED; i++) {
+    //     if (shortlisted[i][0] == '\0') break;
+    //     printf("%s\n", shortlisted[i]);
+    // }
+
+    file_close(&file);
 
     return true;
 }
 
 bool extract_customer_details()
 {
-    file_t file;
+    file_t file, out_file;
     const int customer_code_index = 1;
     int sample_index = 0;
     size_t len;
 
     if (!file_open(customer_file, FILE_READ, &file)) {
+        fprintf(stderr, "\nCustomer file not found\n");
+        return false;
+    }
+
+    if (!file_open(o_customer_file, FILE_WRITE, &out_file)) {
         fprintf(stderr, "\nCustomer file not found\n");
         return false;
     }
@@ -105,9 +116,21 @@ bool extract_customer_details()
         // TODO: Fix the strlen calling
         if (!strncmp(shortlisted[sample_index], &field[1], strlen(field)-2)) {
             printf("%s\n", line);
+            printf("%u\n", buffer.current - line);
+            if (!buffer_copy(&out_buffer, line, buffer.current - line)) {
+                if (!file_write(&out_file, &buffer)) {
+                    fprintf(stderr, "\nFile write failed\n");
+                }
+            }
             sample_index++;
         }
     }
+    if (!file_write(&out_file, &buffer)) {
+        fprintf(stderr, "\nFile write failed\n");
+    }
+
+    file_close(&file);
+    file_close(&out_file);
 
     return true;
 }

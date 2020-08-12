@@ -35,6 +35,8 @@ bool file_open(const char *filename, filetype_t type, file_t *file);
 
 bool file_read(file_t *file, buffer_t *buf, size_t size);
 
+bool file_write(file_t *file, buffer_t *buf);
+
 bool file_close(const file_t *file);
 
 #endif // _FILE_UTILS_H_
