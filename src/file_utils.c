@@ -21,6 +21,7 @@ bool file_open(const char *filename,
 {
     int fd;
     int flags = O_CLOEXEC;
+    mode_t mode = 0;
 
     if (!file || !filename) {
         return false;
@@ -32,16 +33,17 @@ bool file_open(const char *filename,
     } else {
         flags |= O_CREAT;
         flags |= O_WRONLY;
+        flags |= O_TRUNC;
+        mode = S_IRWXU;
     }
 
-    fd = open(filename, flags);
+    fd = open(filename, flags, mode);
     if (-1 == fd) {
-        fprintf(stderr, "\nError opend file\n");
+        perror("Error: ");
         return false;
     }
 
     file->fd = fd;
-    file->current = NULL;
     file->type = type;
 
     return true;
@@ -67,7 +69,7 @@ bool file_read(file_t *file, buffer_t *buf, size_t size)
 
     bytes_read = read(file->fd, buf->current + buf->len, size);
     if (-1 == bytes_read) {
-        fprintf(stderr, "File read error\n");
+        perror("Error: ");
         return false;
     }
     if (0 == bytes_read) {
@@ -89,12 +91,13 @@ bool file_write(file_t *file, buffer_t *buf)
         return true;
 
     while (bytes_write < buf->len) {
-        ret += write(file->fd, buf->current + bytes_write, buf->len - bytes_write);
+        ret = write(file->fd, buf->current + bytes_write, buf->len - bytes_write);
         if (-1 == ret) {
             fprintf(stderr, "File read error\n");
             return false;
         }
         if (0 == ret) {
+            fprintf(stderr, "File read ZERO\n");
             return false;
         }
         bytes_write += ret;

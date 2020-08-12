@@ -28,7 +28,7 @@ bool buffer_free(buffer_t *);
 
 bool buffer_move(buffer_t *, size_t);
 
-bool buffer_copy(buffer_t *, char *, size_t);
+bool buffer_copy(buffer_t *, const char *, size_t);
 
 bool buffer_realign(buffer_t *buf);
 

@@ -20,6 +20,8 @@ bool str_extract_line_fields(buffer_t *buf, char *fields[]);
 
 bool str_extract_field(char *dest, const char *src);
 
-bool str_extract_line_field(buffer_t *buf, uint8_t field_idx, char **line, char **field);
+bool str_extract_line_field(buffer_t *buf, uint8_t field_idx,
+                            char **line, size_t *line_len,
+                            char **field, size_t *field_len);
 #endif // _STR_UTILS_H_
 

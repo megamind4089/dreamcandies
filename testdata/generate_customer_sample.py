@@ -2,7 +2,7 @@ from random import randrange
 
 no_of_entries = 1000
 
-with open('customer_sample.csv', 'w', encoding='utf-8') as out_file:
+with open('sample.csv', 'w', encoding='utf-8') as out_file:
     print("Writing customer_sample File")
     num = 12345
     output = '"CUSTOMER_CODE"\n'

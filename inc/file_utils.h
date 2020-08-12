@@ -22,11 +22,7 @@ typedef enum {
 } filetype_t;
 
 typedef struct _file_t {
-    void        *context;
     int         fd;
-    char        *current;
-    int         readbytes;
-    char        buffer[FILE_BUFFER_SIZE];
     filetype_t  type;
 } file_t;
 

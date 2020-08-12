@@ -10,9 +10,9 @@
 
 #include <stdio.h>
 
-#define CODE_SIZE   (30)
-#define NAME_SIZE   (100)
-#define DATE_SIZE   (12)
+#define CODE_SIZE   (30 + 2)
+#define NAME_SIZE   (100 + 2)
+#define DATE_SIZE   (12 + 2)
 
 #define NUM_SHORTLISTED (1024)
 

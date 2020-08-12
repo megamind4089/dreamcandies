@@ -63,7 +63,7 @@ bool buffer_move(buffer_t *buf, size_t size)
     return true;
 }
 
-bool buffer_copy(buffer_t *buf, char *ptr, size_t size)
+bool buffer_copy(buffer_t *buf, const char *ptr, size_t size)
 {
     if (!buf) return false;
 

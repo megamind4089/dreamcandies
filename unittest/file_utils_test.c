@@ -18,7 +18,7 @@ int main()
     buffer_t    buf;
 
     assert(buffer_init(&buf, 1024));
-    assert(file_open("./test/customer.csv", FILE_READ, &file));
+    assert(file_open("./testdata/customer.csv", FILE_READ, &file));
 
     assert(file_read(&file, &buf, 50));
     for (int i=0; i<50; i++) printf("%c", buf.current[i]);
