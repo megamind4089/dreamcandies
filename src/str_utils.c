@@ -9,7 +9,56 @@
 #include "str_utils.h"
 #include <assert.h>
 
-bool str_extract_line_fields(buffer_t *buf, char *fields[])
+bool str_extract_line_fields(buffer_t *buf,
+                             char **line, size_t *line_len,
+                             char *fields[], size_t *fields_len)
+{
+    int field_index = 0;
+
+    if (!buf || !buf->len || !line || !line_len || !fields || !fields_len)
+        return false;
+
+    memset(fields, 0, sizeof(char *)*STR_MAX_FIELDS);
+    memset(fields_len, 0, sizeof(size_t)*STR_MAX_FIELDS);
+    *line = NULL;
+    *line_len = 0;
+
+    fields[field_index++] = buf->current;
+
+    for (int i = 0; i < buf->len; i++) {
+        char ch = buf->current[i];
+
+        switch(ch)  {
+            case ',':
+                fields[field_index++] = &buf->current[i + 1];
+                break;
+            case '\n':
+            case '\0':
+                *line = buf->current;
+                buf->current[i] = '\0';
+                // THis is not original new field, rather end of line
+                // Its a HACK
+                fields[field_index] = &buf->current[i + 1];
+
+                for (int j = 0; j < field_index; j++) {
+                    fields_len[j] = fields[j+1] - fields[j] - 1;
+                }
+                // Fixing above HACK
+                fields[field_index] = NULL;
+                *line_len = i;
+                buffer_move(buf, i+1);
+
+                return true;
+            default:
+                break;
+        }
+    }
+
+    *line = buf->current;
+    return false;
+}
+
+bool str_extract_line_fields_old(buffer_t *buf, char *fields[])
 {
     int field_index = 0, delim_index = 0;
     char *delimiters[STR_MAX_FIELDS] = {0};
