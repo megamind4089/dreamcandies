@@ -35,7 +35,6 @@ bool str_extract_line_fields(buffer_t *buf,
             case '\n':
             case '\0':
                 *line = buf->current;
-                buf->current[i] = '\0';
                 // THis is not original new field, rather end of line
                 // Its a HACK
                 fields[field_index] = &buf->current[i + 1];

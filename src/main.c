@@ -147,11 +147,6 @@ bool load_sample_customers()
 
     }
 
-    // for (int i = 0; i < NUM_SHORTLISTED; i++) {
-    //     if (sample_customers[i][0] == '\0') break;
-    //     printf("%s\n", sample_customers[i]);
-    // }
-
     file_close(&file);
 
     return true;
@@ -188,12 +183,7 @@ bool extract_customer()
         printf("Extracting header failed\n");
         return false;
     }
-    if (!buffer_copy(&out_buffer, line, line_len)) {
-        if (!file_write(&out_file, &out_buffer)) {
-            fprintf(stderr, "\nFile write failed\n");
-        }
-    }
-    if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+    if (!buffer_copy(&out_buffer, line, line_len+1)) {
         if (!file_write(&out_file, &out_buffer)) {
             fprintf(stderr, "\nFile write failed\n");
         }
@@ -210,12 +200,7 @@ bool extract_customer()
         }
 
         if (!strncmp(sample_customers[sample_index], fields[field_idx_cust], fields_len[field_idx_cust])) {
-            if (!buffer_copy(&out_buffer, line, line_len)) {
-                if (!file_write(&out_file, &out_buffer)) {
-                    fprintf(stderr, "\nFile write failed\n");
-                }
-            }
-            if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+            if (!buffer_copy(&out_buffer, line, line_len+1)) {
                 if (!file_write(&out_file, &out_buffer)) {
                     fprintf(stderr, "\nFile write failed\n");
                 }
@@ -263,12 +248,7 @@ bool extract_invoice()
         printf("Extracting header failed\n");
         return false;
     }
-    if (!buffer_copy(&out_buffer, line, line_len)) {
-        if (!file_write(&out_file, &out_buffer)) {
-            fprintf(stderr, "\nFile write failed\n");
-        }
-    }
-    if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+    if (!buffer_copy(&out_buffer, line, line_len+1)) {
         if (!file_write(&out_file, &out_buffer)) {
             fprintf(stderr, "\nFile write failed\n");
         }
@@ -289,12 +269,7 @@ bool extract_invoice()
             if (!add_invoice(fields[field_idx_invoice], fields_len[field_idx_invoice])) {
                 fprintf(stderr, "Adding invoice to list failed\n");
             }
-            if (!buffer_copy(&out_buffer, line, line_len)) {
-                if (!file_write(&out_file, &out_buffer)) {
-                    fprintf(stderr, "\nFile write failed\n");
-                }
-            }
-            if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+            if (!buffer_copy(&out_buffer, line, line_len+1)) {
                 if (!file_write(&out_file, &out_buffer)) {
                     fprintf(stderr, "\nFile write failed\n");
                 }
@@ -341,12 +316,7 @@ bool extract_invoice_items()
         printf("Extracting header failed\n");
         return false;
     }
-    if (!buffer_copy(&out_buffer, line, line_len)) {
-        if (!file_write(&out_file, &out_buffer)) {
-            fprintf(stderr, "\nFile write failed\n");
-        }
-    }
-    if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+    if (!buffer_copy(&out_buffer, line, line_len+1)) {
         if (!file_write(&out_file, &out_buffer)) {
             fprintf(stderr, "\nFile write failed\n");
         }
@@ -364,12 +334,7 @@ bool extract_invoice_items()
 
         if (is_invoice_in_sample_data(fields[field_idx_invoice], fields_len[field_idx_invoice])) {
 
-            if (!buffer_copy(&out_buffer, line, line_len)) {
-                if (!file_write(&out_file, &out_buffer)) {
-                    fprintf(stderr, "\nFile write failed\n");
-                }
-            }
-            if (!buffer_copy(&out_buffer, NEWLINE, 1)) {
+            if (!buffer_copy(&out_buffer, line, line_len+1)) {
                 if (!file_write(&out_file, &out_buffer)) {
                     fprintf(stderr, "\nFile write failed\n");
                 }
