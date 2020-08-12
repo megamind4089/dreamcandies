@@ -23,3 +23,10 @@ The buffer size is compile time configurable and can be adjusted based on the av
 
 The entire tool reads the input file only once and output it to a file directly without parsing or calculating strlen.
 
+Since the strutils extracts all the fields from the row, this can be extende to parse the individual fields
+based on the future requirements.
+
+
+Improvements:
+Have to add test cases for boundary condition checks.
+
